@@ -1,0 +1,60 @@
+<mujoco>
+    <option gravity="0 0 -.5" />
+    <worldbody>
+
+        <!-- this creates the floor -->
+        <geom
+            type="plane"
+            size="5 5 0.1"
+            rgba="0.8 0.8 0.8 1"
+        />
+
+        <!-- creates a rigid body following x, y, z so x=0, y=0, z=.5 centered and .5 above in space -->
+        <body
+            pos="0 0 10"
+        >
+            <joint type="free" />
+
+            <!-- the visible shape -->
+            <geom
+                type="box"
+                size="0.1 0.1 0.1"
+                solref="0.002 1"
+                mass="1"
+                rgba="1 0 0 1" />
+        </body>
+    </worldbody>
+</mujoco>
+
+<!--
+worldbody: everything that lives in a world like ground, bodies, robot, objects. It's the top level
+body that creates a collection of links and then connects then with joints that specify s child and
+a parent link
+
+body: defines the skeletal structure and kinematics tree of a model... geom elements give those
+bodies physical dimensions, vol, and surface props.
+
+body/joint: when a joint is defined inside a body it's function is not to connect the parent and
+the child but rather to create motion degrees of freedom between them. If not joints are defined
+within a given body, that body is welded to its parent
+
+geom: reps a 3D shape ridgily attached to a body and is primarily used for collision detection,
+visual rendering, and automatic mass/inertia calcs.
+    - primitive types: plane, shpere, capsule, ellipsoid, cylinder, and box
+    Anything more complex would use "mesh" (import 3D files) and "hfield" (height fields for rough
+terrain
+    - "size":
+        - box: Half-lengths along the X, Y, and Z axes (3 values)
+        - sphere: Radius (1 value)
+        - capsule / cylinder: Radius and half-length (2 values)
+    - pos / quat / euler: The position and orientation relative to the parent body's frame. By default,
+MuJoCo aligns a geom's local origin exactly with its geometric center
+    - rgba / material: Controls visual appearance (Red, Green, Blue, Alpha). Setting Alpha (the 4th
+value) to 0 makes a geom invisible but keeps it physically interactive
+    - friction: Defines contact mechanics (3 values: sliding, torsional, and rolling friction
+coefficients)
+    - contype / conaffinity: Bitmasks that dictate which geoms are allowed to collide with one another.
+
+
+
+-->

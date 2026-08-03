@@ -1,0 +1,56 @@
+<mujoco>
+
+    <option gravity="0 0 -10" />
+
+    <worldbody>
+
+        <geom
+            type="plane"
+            size="5 5 0.1"
+            rgba="247 247 229 1"
+        />
+
+        <body
+            name="arm"
+            pos="0 0 1">
+
+            <joint
+                name="hinge"
+                type="hinge"
+                axis="1 0 0"
+            />
+
+            <geom
+                type="capsule"
+                fromto="0 0 0 0 0 -0.5"
+                size="0.03"
+                rgba="1 0 0 1"
+            />
+
+        </body>
+
+    </worldbody>
+
+
+    <actuator>
+
+        <motor
+            joint="hinge"
+            gear="10"
+        />
+
+    </actuator>
+
+
+</mujoco>
+
+<!-- 
+actuator/motor: defines how control signals are translated into generalized forces (torques) applied to joints or tendons
+F = gear * u, where F is final force or torque, gear is the gear ratio/scaling factor specified in XML, and u is the scalar control signal sent to the actuator (-1 <= u <= 1)
+
+More on gear:
+1-Dimensional: If a joint has a single degree of freedom, gear="N" multiplies the applied motor force by N, simulating a gearbox with a gear ratio of N
+6-Dimensional: When actuating a complex body or freejoint, you can specify 6 numbers to assign independent force and torque multipliers for \([F_x, F_y, F_z, T_x, T_y, T_z]\)
+
+body/joint/hinge: provides a single rotational degree of freedom (DoF) btween a body and its parent, typically functioning as a pivot or pin
+-->

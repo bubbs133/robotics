@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/440265137922724582/9726cb3111fa410a986fa057d11aed34/artifacts
+end_time: 1785466507087
+entry_point_name: ''
+experiment_id: '440265137922724582'
+lifecycle_stage: active
+run_id: 9726cb3111fa410a986fa057d11aed34
+run_name: zealous-colt-443
+run_uuid: 9726cb3111fa410a986fa057d11aed34
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1785466504270
+status: 3
+tags: []
+user_id: avatarvaleria

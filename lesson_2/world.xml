@@ -1,0 +1,106 @@
+<mujoco>
+    <option
+        gravity="0 0 -.5"
+    />
+    <worldbody>
+        <camera
+            name="robot_camera"
+            pos="2 -2 2"
+        />
+
+        <geom
+            type="plane"
+            size="5 5 0.1"
+            rgba="0.969 0.969 0.898 1"
+        />
+
+        <body
+            name="arm"
+            pos="1 0 0"
+        >
+            <joint
+                name="hinge"
+                type="hinge"
+                axis="1 0 0"
+            />
+            <!-- without the geom the body (which is just am arm) will not have inertia so add geom
+            which is a physical object in the simulator to automatically add mass/inertia to the
+            body else you can define it directly but it's best to use geom-->
+            <geom
+                type="capsule"
+                fromto="0 0 0 0 0 1"
+                size="0.05"
+                density="1000"
+            />
+        </body>
+    </worldbody>
+
+    <actuator>
+        <motor
+            joint="hinge"
+            gear="50" />
+    </actuator>
+
+    <sensor>
+        <jointpos
+            name="arm_angle"
+            joint="hinge"
+        />
+    </sensor>
+</mujoco>
+
+<!-- 
+Understanding qpos
+For example, for an arm with one hinge joint
+
+       |
+       O  << hinge joint
+      /
+     /
+
+If the arm rotates 30 degs, the simulator stores the data in qpos. So qpos is the robot's memory of
+where every joint is currently at.
+
+      O  <- shoulder
+     /
+    O   <- elbow
+   /
+
+print(data.qpos) will print an array rep radians, for example [1.5] which is the position of a
+single hinge joint or [0.5 1.0] for two hinge joints
+
+print(data.qpos[0]) returns, in radians, the postition of hinge joint 1 and so on as usual
+
+You can also define a position to a joint by simply assigning it to a number of your choice
+
+The meaning of each entry in qpos depends on the type of joint:
+- Hinge joint (type="hinge") → angle in radians
+- Slide joint (type="slide") → linear distance (usually meters)
+- Free joint (type="free") → 7 values (3 for position + 4 for orientation as a quaternion)
+
+What is a controller?
+A controller is a piece of code that decides: given the robot's current state what should the
+robot's motors do?
+Observe      Speedometer says 30mph
+↓                      ↓
+Think          "I want to go 40mph"
+↓                      ↓
+Act             Press gas pedal
+
+data.ctrl[0] = 1 this controls the motor, keeps pushing w the force of 1 forever. But irl u want
+something smarter, not just pushing at the same force forever
+
+For example:
+Where is the arm?
+↓
+Is it below 45°?
+↓
+Yes
+↓
+Push
+Otherwise
+↓
+Stop pushing
+
+
+-->

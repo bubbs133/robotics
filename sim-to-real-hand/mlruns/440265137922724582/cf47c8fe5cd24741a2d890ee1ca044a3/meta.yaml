@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/440265137922724582/cf47c8fe5cd24741a2d890ee1ca044a3/artifacts
+end_time: 1785716574038
+entry_point_name: ''
+experiment_id: '440265137922724582'
+lifecycle_stage: active
+run_id: cf47c8fe5cd24741a2d890ee1ca044a3
+run_name: intrigued-carp-891
+run_uuid: cf47c8fe5cd24741a2d890ee1ca044a3
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1785716571645
+status: 3
+tags: []
+user_id: avatarvaleria

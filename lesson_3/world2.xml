@@ -1,0 +1,204 @@
+<mujoco model="4_link_3_finger_arm">
+    <compiler autolimits="true" />
+
+    <asset>
+        <texture type="skybox" name="sky" builtin="flat" rgb1="0.75 0.9 1" rgb2="0.75 0.9 1"
+            width="512" height="512" />
+        <material name="sky_mat" texture="sky" />
+    </asset>
+
+    <option gravity="0 0 0" />
+    <worldbody>
+        <geom type="plane" size="10 10 1" rgba="0.969 0.969 0.957 1" />
+        <camera name="main" pos="3 3 4" />
+
+        <body name="base-body" pos="0 0 0.01">
+            <geom type="cylinder" size="0.75 0.3" fromto="0 0 0 0 0 0.3" rgba="0.114 0.322 0.42 1" />
+
+            <body name="base-body-p1" pos="0 0 0.3">
+                <joint name="joint-1" type="hinge" axis="0 0 1" />
+                <geom type="cylinder" size="0.4 0.15" fromto="0 0 0 0 0 0.3"
+                    rgba="0.208 0.435 0.541 1" />
+
+                <body name="base-body-p2" pos="0 0 0.3">
+                    <joint name="joint-2" type="hinge" axis="0 0 1" />
+                    <geom type="capsule" size="0.15" fromto="0 0 0 0 0 1.2"
+                        rgba="0.396 0.616 0.722 1" />
+
+                    <body name="base-body-p4" pos="0 0 0.3">
+                        <joint name="joint-3" type="hinge" axis="0 1 0" />
+                        <geom type="capsule" size="0.13" fromto="0 0 0 0 0 1.2"
+                            rgba="0.39 0.433 0.72 1" />
+
+                        <body name="base-body-p5" pos="0 0 1.2">
+                            <joint name="joint-4" type="hinge" axis="0 1 0" />
+                            <geom type="capsule" size="0.12" fromto="0 0 0 1.0 0 0"
+                                rgba="0.5 0.72 0.6 1" />
+
+                            <body name="base-body-p6" pos="1.0 0 0">
+                                <joint name="joint-5" type="hinge" axis="0 1 0" />
+                                <geom type="capsule" size="0.1" fromto="0 0 0 0.5 0 0"
+                                    rgba="0.3 0.702 0.8 1" />
+
+                                <body name="palm-body" pos="0.5 0 0">
+                                    <geom type="cylinder" size="0.12 0.02" euler="0 90 0"
+                                        rgba="0.2 0.54 0.35 1" />
+
+                                    <body name="f1_proximal" pos="0 0 0.10" euler="0 0 0">
+                                        <joint name="f1_j1" type="hinge" axis="0 0 -1" range="0 90" />
+                                        <geom type="box" size="0.04 0.01 0.015" pos="0.04 0 0"
+                                            rgba="1 0 0 1" />
+
+                                        <body name="f1_intermediate" pos="0.08 0 0">
+                                            <joint name="f1_j2" type="hinge" axis="0 0 -1"
+                                                range="0 90" />
+                                            <geom type="box" size="0.03 0.01 0.012" pos="0.03 0 0"
+                                                rgba="0.8 0 0 1" />
+
+                                            <body name="f1_distal" pos="0.06 0 0">
+                                                <joint name="f1_j3" type="hinge" axis="0 0 -1"
+                                                    range="0 90" />
+                                                <geom type="box" size="0.02 0.008 0.01"
+                                                    pos="0.02 0 0"
+                                                    rgba="0.6 0 0 1" />
+                                            </body>
+                                        </body>
+                                    </body>
+
+                                    <body name="f2_proximal" pos="0 -0.086 -0.05" euler="120 0 0">
+                                        <joint name="f2_j1" type="hinge" axis="0 0 -1" range="0 90" />
+                                        <geom type="box" size="0.04 0.01 0.015" pos="0.04 0 0"
+                                            rgba="0 1 0 1" />
+
+                                        <body name="f2_intermediate" pos="0.08 0 0">
+                                            <joint name="f2_j2" type="hinge" axis="0 0 -1"
+                                                range="0 90" />
+                                            <geom type="box" size="0.03 0.01 0.012" pos="0.03 0 0"
+                                                rgba="0 0.8 0 1" />
+
+                                            <body name="f2_distal" pos="0.06 0 0">
+                                                <joint name="f2_j3" type="hinge" axis="0 0 -1"
+                                                    range="0 90" />
+                                                <geom type="box" size="0.02 0.008 0.01"
+                                                    pos="0.02 0 0"
+                                                    rgba="0 0.6 0 1" />
+                                            </body>
+                                        </body>
+                                    </body>
+
+                                    <body name="f3_proximal" pos="0 0.086 -0.05" euler="-120 0 0">
+                                        <joint name="f3_j1" type="hinge" axis="0 0 -1" range="0 90" />
+                                        <geom type="box" size="0.04 0.01 0.015" pos="0.04 0 0"
+                                            rgba="0 0 1 1" />
+
+                                        <body name="f3_intermediate" pos="0.08 0 0">
+                                            <joint name="f3_j2" type="hinge" axis="0 0 -1"
+                                                range="0 90" />
+                                            <geom type="box" size="0.03 0.01 0.012" pos="0.03 0 0"
+                                                rgba="0 0 0.8 1" />
+
+                                            <body name="f3_distal" pos="0.06 0 0">
+                                                <joint name="f3_j3" type="hinge" axis="0 0 -1"
+                                                    range="0 90" />
+                                                <geom type="box" size="0.02 0.008 0.01"
+                                                    pos="0.02 0 0"
+                                                    rgba="0 0 0.6 1" />
+                                            </body>
+                                        </body>
+                                    </body>
+
+                                </body>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+    <!-- 
+    <actuator>
+        <motor name="m_j1" joint="joint-1" ctrlrange="-3 3" />
+        <motor name="m_j2" joint="joint-2" ctrlrange="-3 3" />
+        <motor name="m_j3" joint="joint-3" ctrlrange="-3 3" />
+        <motor name="m_j4" joint="joint-4" ctrlrange="-3 3" />
+
+        <position name="f1_p1" joint="f1_j1" kp="10" ctrlrange="0 1.5" />
+        <position name="f1_p2" joint="f1_j2" kp="10" ctrlrange="0 1.5" />
+        <position name="f1_p3" joint="f1_j3" kp="10" ctrlrange="0 1.5" />
+
+        <position name="f2_p1" joint="f2_j1" kp="10" ctrlrange="0 1.5" />
+        <position name="f2_p2" joint="f2_j2" kp="10" ctrlrange="0 1.5" />
+        <position name="f2_p3" joint="f2_j3" kp="10" ctrlrange="0 1.5" />
+
+        <position name="f3_p1" joint="f3_j1" kp="10" ctrlrange="0 1.5" />
+        <position name="f3_p2" joint="f3_j2" kp="10" ctrlrange="0 1.5" />
+        <position name="f3_p3" joint="f3_j3" kp="10" ctrlrange="0 1.5" />
+    </actuator>
+
+    -->
+</mujoco>
+
+<!-- 
+Official Geom Types
+- plane (mjGEOM_PLANE): An infinite 2D surface, commonly used as the ground
+- hfield (mjGEOM_HFIELD): Height field, useful for terrain generation by referencing an elevation
+asset
+- sphere (mjGEOM_SPHERE): A basic spherical shape 
+- capsule (mjGEOM_CAPSULE): A cylinder with hemispherical ends. Very common for limb segments in
+robotics and characters
+- ellipsoid (mjGEOM_ELLIPSOID): A scaled 3D sphere... (thickness, width, length)
+- cylinder (mjGEOM_CYLINDER): A standard cylinder... (radius, height)
+- box (mjGEOM_BOX): A rectangular prism (cuboid)
+- mesh (mjGEOM_MESH): Complex 3D models imported from asset files (e.g., STL, OBJ)
+- sdf (mjGEOM_SDF): Signed Distance Field for complex geometry-collision handling
+
+Geom fromto: defines the spatial orientation and length of a geometric primitive
+by specifying its start and end coordinates. It takes six real numbers in the format fromto="x1 y1
+z1 x2 y2 z2", which overrides the default position (pos) and orientation (quat) parameters for
+select shapes.
+
+start (x1, y1, z1) to end (x2, y2, z2)
+(x1, y1), (x2, y2), (x3, y3)
+
+ex. Capsule from (0, 0, 0) to (0, 0, 1) with radius 0.1
+    <geom type="capsule" size="0.1" fromto="0 0 0 0 0 1"/>
+
+This means:
+z
+1 ●
+|
+|
+|
+0 ●
+
+fromto="0 0 0 1 0 0" would be
+x
+●────────●
+0        1
+
+
+
+Understanding Coordinates of Camera and Bodies:
+Think that each body has its own (x, y, z) coordinates
+
+World
+
+        Z
+        ^
+        |
+        |
+        O ....> X
+       /
+      Y
+
+        y
+        ^
+        |
+        |
+        O ....> x
+       /
+      z
+
+WHen you write <body pos="1 0 0">, you are saying that everything inside that body is relative to
+(1, 0, 0) which is its origin.
+-->

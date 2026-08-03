@@ -1,0 +1,1 @@
+In the lesson, you'll cover cameras, sensors, keeping track of the joint's angles, controlling the body, motors, and collisions.
