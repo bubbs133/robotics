@@ -1,4 +1,7 @@
 import numpy as np
+import joblib
+
+from loader import EMG_FEATURE_WINDOWS, EMG_LABLE_WINDOWS, RAW_EMG_WINDOWS_PATH
 
 
 def mav(emg_baches):
@@ -38,6 +41,30 @@ def variance(emg_batches):
     var = np.var(emg_batches, ddof=1, axis=1)
 
     return var
+
+
+def extracting_features(emg_batches):
+    mav_features = mav(emg_batches)
+    rms_features = rms(emg_batches)
+    wl_features = wl(emg_batches)
+    zc_features = zc(emg_batches)
+    ssc_features = ssc(emg_batches)
+    variance_features = variance(emg_batches)
+
+    all_features = np.hstack(
+        [
+            mav_features,
+            rms_features,
+            wl_features,
+            zc_features,
+            ssc_features,
+            variance_features,
+        ]
+    )
+
+    all_features = all_features.reshape(1, -1)
+
+    return all_features
 
 
 # order of features
