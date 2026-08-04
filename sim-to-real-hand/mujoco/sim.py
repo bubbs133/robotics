@@ -2,25 +2,16 @@ import mujoco
 import mujoco.viewer
 import os
 import time
-from ..my_models.loader import V1_SVC_MODEL, SVC_MODEL_PATH
+import joblib
+from ..ml.loader import V1_SVC_MODEL, SVC_MODEL_PATH, V1_SVC_SCALER
 
 
-model = mujoco.MjModel.from_xml_path("world.xml")
-data = mujoco.MjData(model)
+world = mujoco.MjModel.from_xml_path("world.xml")
+data = mujoco.MjData(world)
 
-step = 0
-
-gesture_map = {
-    1: "thumbs up",
-    2: "extension of index and middle, flexion on others",
-    3: "flexion on ring and little finger, extension of others",
-    6: "fingers flexed into fist",
-    7: "pointing index",
-}
-
-with mujoco.viewer.launch_passive(model=model, data=data) as viewer:
+with mujoco.viewer.launch_passive(model=world, data=data) as viewer:
     while viewer.is_running():
-        mujoco.mj_step(model, data)
+        mujoco.mj_step(world, data)
 
         viewer.sync()
 
