@@ -15,8 +15,15 @@ RAW_EMG_LABELS_PATH = os.path.join(BASE_DIR, "ml", "label_batches.pkl")
 V1_SVC_MODEL = joblib.load(SVC_MODEL_PATH)
 V1_SVC_SCALER = joblib.load(V1_SCALER_PATH)
 
-EMG_FEATURE_WINDOWS = joblib.load(RAW_EMG_WINDOWS_PATH)
-EMG_LABLE_WINDOWS =joblib.load(RAW_EMG_LABELS_PATH)
+RAW_EMG_TEST_WINDOWS = joblib.load(RAW_EMG_WINDOWS_PATH)
+RAW_EMG_TEST_LABEL_WINDOWS =joblib.load(RAW_EMG_LABELS_PATH)
+
+
+def main():
+    print(RAW_EMG_TEST_WINDOWS[0].shape)
+
+
+main()
 
 """def deserializing_data(emg_data):
 

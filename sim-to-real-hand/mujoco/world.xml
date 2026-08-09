@@ -15,6 +15,7 @@
 
         <!-- Hand Palm Base (floating or fixed in space) -->
         <body name="palm" pos="0 0 0.6">
+            <joint name="wrist_joint" type="hinge" axis="0 1 0" range="-1.5 0.2" damping="0.1" />
             <geom type="box" size="0.04 0.05 0.015" material="palm_mat" />
 
             <!-- 1. Thumb -->
@@ -52,6 +53,7 @@
 
     <!-- Actuators to control each finger via data.ctrl -->
     <actuator>
+        <motor joint="wrist_joint" gear="5" />
         <motor joint="thumb_joint" gear="5" />
         <motor joint="index_joint" gear="5" />
         <motor joint="middle_joint" gear="5" />
