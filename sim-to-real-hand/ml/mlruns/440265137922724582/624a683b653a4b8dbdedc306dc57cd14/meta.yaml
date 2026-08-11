@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/440265137922724582/624a683b653a4b8dbdedc306dc57cd14/artifacts
+end_time: 1785466759599
+entry_point_name: ''
+experiment_id: '440265137922724582'
+lifecycle_stage: active
+run_id: 624a683b653a4b8dbdedc306dc57cd14
+run_name: debonair-mare-480
+run_uuid: 624a683b653a4b8dbdedc306dc57cd14
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1785466756835
+status: 3
+tags: []
+user_id: avatarvaleria

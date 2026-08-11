@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/440265137922724582/a1e1ab4f220442eb8ef66990fd863b83/artifacts
+end_time: 1785467084354
+entry_point_name: ''
+experiment_id: '440265137922724582'
+lifecycle_stage: active
+run_id: a1e1ab4f220442eb8ef66990fd863b83
+run_name: upset-auk-848
+run_uuid: a1e1ab4f220442eb8ef66990fd863b83
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1785467081617
+status: 3
+tags: []
+user_id: avatarvaleria

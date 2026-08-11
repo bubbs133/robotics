@@ -5,7 +5,7 @@ from ml.loader import (
     RAW_EMG_TEST_LABEL_WINDOWS,
 )
 from ml.feature_extractions import extracting_features
-from mujoco.gesture_map import GESTURE_MAP
+from simulation.gesture_map import GESTURE_MAP
 
 import numpy as np
 
