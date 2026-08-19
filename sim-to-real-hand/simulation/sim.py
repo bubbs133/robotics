@@ -1,50 +1,79 @@
-import simulation
-import mujoco.viewer
 import time
 from pathlib import Path
 
-from ml.loader import RAW_EMG_TEST_WINDOWS
-from ml.predict import predict
+import mujoco
+import mujoco.viewer
+import numpy as np
 
-GESTURE_TARGETS = {
-    1: [2.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-    2: [2.0, 1.0, 1.0, 1.0, 1.0, 1.0],
-    3: [2.0, 0.8, 0.8, 0.0, 0.0, 0.0],
-    6: [2.0, 0.5, 0.5, 0.5, 0.5, 0.5],
-    7: [2.0, 0.2, 0.2, 0.2, 0.2, 0.2],
-}
-
+from simulation.gesture_map import GESTURE_MAP, GESTURE_TARGETS
 
 WORLD_PATH = Path(__file__).parent / "world.xml"
 
-model = simulation.MjModel.from_xml_path(str(WORLD_PATH))
-data = simulation.MjData(model)
 
+class HandSimulation:
 
-with simulation.viewer.launch_passive(model=model, data=data) as viewer:
+    def __init__(self):
 
-    for window in RAW_EMG_TEST_WINDOWS:
+        self.model = mujoco.MjModel.from_xml_path(str(WORLD_PATH))
 
-        prediction = predict(window)
+        self.data = mujoco.MjData(self.model)
 
-        print("Predicted gesture:", prediction)
+        self.viewer = None
 
+    def launch(self):
 
-        if prediction in GESTURE_TARGETS:
+        self.viewer = mujoco.viewer.launch_passive(self.model, self.data)
 
-            target = GESTURE_TARGETS[prediction]
+    def move_to_gesture(self, prediction, steps=100, settle_steps=30):
+        """
+        Ramp data.ctrl (the position-actuator setpoint) from wherever it
+        currently is to the gesture target, stepping physics along the
+        way. Because the actuators in world.xml are now <position> type,
+        MuJoCo's internal PD control does the actual work of moving each
+        joint toward data.ctrl -- this method just needs to move the
+        setpoint smoothly and let physics catch up.
+        """
 
-            # Apply target to all actuators
-            data.ctrl[:] = target
+        if prediction not in GESTURE_TARGETS:
+            return
 
-        # Let MuJoCo simulate for a little while
-        for _ in range(2):
+        target = np.array(GESTURE_TARGETS[prediction], dtype=float)
 
-            simulation.mj_step(model, data)
+        if len(target) != self.model.nu:
 
-            viewer.sync()
+            raise ValueError(
+                f"Expected {self.model.nu} actuator targets " f"but got {len(target)}."
+            )
+
+        start = self.data.ctrl.copy()
+
+        for i in range(steps):
+
+            alpha = (i + 1) / steps
+
+            self.data.ctrl[:] = start + alpha * (target - start)
+
+            mujoco.mj_step(self.model, self.data)
+
+            if self.viewer is not None:
+                self.viewer.sync()
 
             time.sleep(0.01)
 
-        if not viewer.is_running():
-            break
+        # hold the final pose for a bit so the joints settle instead of
+        # snapping to a stop mid-motion
+        for _ in range(settle_steps):
+
+            mujoco.mj_step(self.model, self.data)
+
+            if self.viewer is not None:
+                self.viewer.sync()
+
+            time.sleep(0.01)
+
+    def step(self):
+
+        mujoco.mj_step(self.model, self.data)
+
+        if self.viewer is not None:
+            self.viewer.sync()

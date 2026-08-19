@@ -15,49 +15,55 @@
 
         <!-- Hand Palm Base (floating or fixed in space) -->
         <body name="palm" pos="0 0 0.6">
-            <joint name="wrist_joint" type="hinge" axis="0 1 0" range="-1.5 0.2" damping="0.1" />
+            <joint name="wrist_joint" type="hinge" axis="0 1 0" range="-1.5 0.2" damping="0.5" />
             <geom type="box" size="0.04 0.05 0.015" material="palm_mat" />
 
             <!-- 1. Thumb -->
             <body name="thumb_base" pos="-0.03 -0.03 -0.01">
-                <joint name="thumb_joint" type="hinge" axis="0 1 0" range="-1.5 0.2" damping="0.1" />
+                <joint name="thumb_joint" type="hinge" axis="0 1 0" range="-1.5 0.2" damping="0.5" />
                 <geom type="capsule" size="0.012" fromto="0 0 0 -0.03 -0.03 -0.02"
                     material="finger_mat" />
             </body>
 
             <!-- 2. Index Finger -->
             <body name="index_base" pos="-0.02 0.05 0">
-                <joint name="index_joint" type="hinge" axis="1 0 0" range="0 1.57" damping="0.1" />
+                <joint name="index_joint" type="hinge" axis="1 0 0" range="0 1.57" damping="0.5" />
                 <geom type="capsule" size="0.01" fromto="0 0 0 0 0.04 0" material="finger_mat" />
             </body>
 
             <!-- 3. Middle Finger -->
             <body name="middle_base" pos="0 0.05 0">
-                <joint name="middle_joint" type="hinge" axis="1 0 0" range="0 1.57" damping="0.1" />
+                <joint name="middle_joint" type="hinge" axis="1 0 0" range="0 1.57" damping="0.5" />
                 <geom type="capsule" size="0.01" fromto="0 0 0 0 0.045 0" material="finger_mat" />
             </body>
 
             <!-- 4. Ring Finger -->
             <body name="ring_base" pos="0.02 0.05 0">
-                <joint name="ring_joint" type="hinge" axis="1 0 0" range="0 1.57" damping="0.1" />
+                <joint name="ring_joint" type="hinge" axis="1 0 0" range="0 1.57" damping="0.5" />
                 <geom type="capsule" size="0.01" fromto="0 0 0 0 0.04 0" material="finger_mat" />
             </body>
 
             <!-- 5. Pinky Finger -->
             <body name="pinky_base" pos="0.035 0.045 0">
-                <joint name="pinky_joint" type="hinge" axis="1 0 0" range="0 1.57" damping="0.1" />
+                <joint name="pinky_joint" type="hinge" axis="1 0 0" range="0 1.57" damping="0.5" />
                 <geom type="capsule" size="0.01" fromto="0 0 0 0 0.035 0" material="finger_mat" />
             </body>
         </body>
     </worldbody>
 
-    <!-- Actuators to control each finger via data.ctrl -->
+    <!--
+        Position actuators: ctrl is now interpreted directly as a target
+        joint angle (radians), and MuJoCo runs the PD control internally
+        (force = kp * (ctrl - qpos) - kv * qvel). This is what makes
+        "set data.ctrl to the gesture target" actually hold a pose instead
+        of just applying a constant torque.
+    -->
     <actuator>
-        <motor joint="wrist_joint" gear="5" />
-        <motor joint="thumb_joint" gear="5" />
-        <motor joint="index_joint" gear="5" />
-        <motor joint="middle_joint" gear="5" />
-        <motor joint="ring_joint" gear="5" />
-        <motor joint="pinky_joint" gear="5" />
+        <position joint="wrist_joint" kp="20" ctrlrange="-1.5 0.2" />
+        <position joint="thumb_joint" kp="20" ctrlrange="-1.5 0.2" />
+        <position joint="index_joint" kp="15" ctrlrange="0 1.57" />
+        <position joint="middle_joint" kp="15" ctrlrange="0 1.57" />
+        <position joint="ring_joint" kp="15" ctrlrange="0 1.57" />
+        <position joint="pinky_joint" kp="15" ctrlrange="0 1.57" />
     </actuator>
 </mujoco>
