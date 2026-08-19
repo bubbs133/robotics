@@ -5,5 +5,4 @@ scikit-learn
 joblib
 scipy
 kagglehub
-os
-matplotlib.pyplot
+matplotlib
