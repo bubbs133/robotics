@@ -3,7 +3,7 @@ numpy
 pandas
 scikit-learn
 joblib
-scipy.io
+scipy
 kagglehub
 os
 matplotlib.pyplot
