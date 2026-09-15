@@ -1,4 +1,5 @@
 import os
+import re
 import streamlit as st
 import numpy as np
 import pandas as pd
@@ -13,12 +14,28 @@ from simulation.gesture_map import GESTURE_MAP, GESTURE_TARGETS
 # GESTURE VIDEOS
 # --------------------------------------------------
 # Map each gesture ID to its demo clip. Files live in "videos/" next to
-# app.py, named after the gesture (e.g. "fist.mov", "peace.mov").
+# app.py. Filenames don't need to exactly match GESTURE_MAP names -- we
+# normalize both sides (lowercase, punctuation stripped) and match on that,
+# so "Flexion on ring and little finger, extension of others" matches
+# "flexion_on_ring_and_little_finger_extension_of_others.mov" even though
+# the comma isn't present in the filename.
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 VIDEO_DIR = os.path.join(BASE_DIR, "videos")
+
+
+def _slugify(text):
+    return re.sub(r"[^a-z0-9]+", "_", text.lower()).strip("_")
+
+
+_video_files_by_slug = {}
+if os.path.isdir(VIDEO_DIR):
+    for fname in os.listdir(VIDEO_DIR):
+        stem, ext = os.path.splitext(fname)
+        if ext.lower() in (".mov", ".mp4"):
+            _video_files_by_slug[_slugify(stem)] = os.path.join(VIDEO_DIR, fname)
+
 GESTURE_VIDEOS = {
-    gid: os.path.join(VIDEO_DIR, f"{name.lower().replace(' ', '_')}.mov")
-    for gid, name in GESTURE_MAP.items()
+    gid: _video_files_by_slug.get(_slugify(name)) for gid, name in GESTURE_MAP.items()
 }
 
 st.set_page_config(
@@ -180,8 +197,11 @@ with tab_demo:
         if video_path and os.path.exists(video_path):
             st.subheader("Gesture Video")
             st.video(video_path)
-        elif video_path:
-            st.caption(f"No video found at `{video_path}` for gesture {prediction}.")
+        else:
+            st.caption(
+                f"No video file matched for gesture {prediction} "
+                f"({pred_gesture}). Check that a file for it exists in `videos/`."
+            )
 
         if true_label is not None:
             if true_label == prediction:
