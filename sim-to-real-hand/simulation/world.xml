@@ -14,13 +14,13 @@
         <light pos="0 0 1.5" dir="0 0 -1" />
 
         <!-- Hand Palm Base (floating or fixed in space) -->
-        <body name="palm" pos="0 0 0.6">
+        <body name="palm" pos="0 0 0.6" quat="0 0 1 0">
             <joint name="wrist_joint" type="hinge" axis="0 1 0" range="-1.5 0.2" damping="0.5" />
             <geom type="box" size="0.04 0.05 0.015" material="palm_mat" />
 
             <!-- 1. Thumb -->
             <body name="thumb_base" pos="-0.03 -0.03 -0.01">
-                <joint name="thumb_joint" type="hinge" axis="0 1 0" range="-1.5 0.2" damping="0.5" />
+                <joint name="thumb_joint" type="hinge" axis="0 -1 0" range="-1.5 0.2" damping="0.5" />
                 <geom type="capsule" size="0.012" fromto="0 0 0 -0.03 -0.03 -0.02"
                     material="finger_mat" />
             </body>

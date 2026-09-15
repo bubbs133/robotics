@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import numpy as np
 import pandas as pd
@@ -7,6 +8,17 @@ from ml.loader import RAW_EMG_TEST_WINDOWS, RAW_EMG_TEST_LABEL_WINDOWS
 from ml.predict import predict
 from ml.feature_extractions import extracting_features
 from simulation.gesture_map import GESTURE_MAP, GESTURE_TARGETS
+
+# --------------------------------------------------
+# GESTURE VIDEOS
+# --------------------------------------------------
+# Map each gesture ID to its demo clip. Files live in "videos/" next to
+# app.py, named after the gesture (e.g. "fist.mov", "peace.mov").
+VIDEO_DIR = "videos"
+GESTURE_VIDEOS = {
+    gid: os.path.join(VIDEO_DIR, f"{name.lower().replace(' ', '_')}.mov")
+    for gid, name in GESTURE_MAP.items()
+}
 
 st.set_page_config(
     page_title="EMG to MuJoCo Hand Demo", page_icon="🦾", layout="centered"
@@ -128,12 +140,6 @@ with tab_demo:
 
         sent = send_gesture(prediction)
 
-        if not sent:
-            st.warning(
-                "MuJoCo is not running. Start it with "
-                "`mjpython simulation/server.py`."
-            )
-
     # --------------------------------------------------
     # DISPLAY RESULTS
     # --------------------------------------------------
@@ -169,15 +175,22 @@ with tab_demo:
         with col4:
             st.success(f"\n\n**Gesture**\n\n{prediction}\n\n{pred_gesture}")
 
+        video_path = GESTURE_VIDEOS.get(prediction)
+        if video_path and os.path.exists(video_path):
+            st.subheader("Gesture Video")
+            st.video(video_path)
+        elif video_path:
+            st.caption(f"No video found at `{video_path}` for gesture {prediction}.")
+
         if true_label is not None:
             if true_label == prediction:
                 st.success(
-                    f"✅ Predicted class **{prediction}** matches the true "
+                    f"Predicted class **{prediction}** matches the true"
                     f"label **{true_label}** ({GESTURE_MAP.get(true_label, 'Unknown')})."
                 )
             else:
                 st.error(
-                    f"❌ Predicted class **{prediction}** "
+                    f"Predicted class **{prediction}** "
                     f"({pred_gesture}) — true label is **{true_label}** "
                     f"({GESTURE_MAP.get(true_label, 'Unknown')})."
                 )
