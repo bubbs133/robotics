@@ -14,7 +14,8 @@ from simulation.gesture_map import GESTURE_MAP, GESTURE_TARGETS
 # --------------------------------------------------
 # Map each gesture ID to its demo clip. Files live in "videos/" next to
 # app.py, named after the gesture (e.g. "fist.mov", "peace.mov").
-VIDEO_DIR = "videos"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+VIDEO_DIR = os.path.join(BASE_DIR, "videos")
 GESTURE_VIDEOS = {
     gid: os.path.join(VIDEO_DIR, f"{name.lower().replace(' ', '_')}.mov")
     for gid, name in GESTURE_MAP.items()
